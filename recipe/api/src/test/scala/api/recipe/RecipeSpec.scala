@@ -1,28 +1,23 @@
-package org.scalatra.example.swagger
+package api.recipe
 
 import org.scalatra.test.specs2._
 
 class RecipeSpec extends ScalatraSpec { def is = s2"""
-  GET / on Flowers 
-    should return status 200 $root200
-  GET / on Flowers with a name param
-    should return status 200 $nameParamWorks
-  GET /:slug on Flowers
-    should return status 200 $slugWorks
+  GET / on Recipes random
+    should return status 200 $randomTest
+  GET / on Recipe with salad
+    should return status 200 $recipesAllTest
 """
 
-  implicit val swagger = new FlowersSwagger
-  addServlet(new FlowersController, "/flowers/*")
+  implicit val swagger = new RecipeSwagger
+  addServlet(new RecipeController, "/recipes/*")
 
-  def root200 = get("/flowers") {
+  def randomTest = get("/recipes/random") {
     status must_== 200
   }
 
-  def nameParamWorks = get("/flowers/?name=rose") {
+  def recipesAllTest = get("/recipes/all") {
     status must_== 200
   }
-
-  def slugWorks = get("/flowers/red-rose") {
-    status must_== 200
-  }
+  
 }
