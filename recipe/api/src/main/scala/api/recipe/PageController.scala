@@ -1,11 +1,11 @@
 package api.recipe
 import org.scalatra._
 
-class PageController extends ScalatraServlet
+class PageController extends ScalatraServlet with FlashMapSupport
 {
+  
   get("/")
   {
-    contentType="text/html"
     <html>
       <head><title>Recipes</title></head>
       <h1>Welcome to the recipe api</h1>
@@ -19,7 +19,7 @@ class PageController extends ScalatraServlet
       <li><a href="http://localhost:8080/recipes/lunch">recipes/lunch</a></li>
       <li><a href="http://localhost:8080/recipes/dessert">recipes/dessert</a></li>
       <li><a href="http://localhost:8080/recipes/dinner">recipes/dinner</a></li>
-      <li><a href='http://localhost:8080/recipes/mealPlan?calories=1000'>recipes/mealPlan?calories=1000</a></li>
+      <li><a href='http://localhost:8080/recipes/mealPlan?calories=1000&amp;diet=Vegetarian'>recipes/mealPlan?calories=1000&amp;diet=Vegetarian</a></li>
       </ul>
     </html>
   }
