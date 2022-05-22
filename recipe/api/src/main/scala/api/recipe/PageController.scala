@@ -19,7 +19,7 @@ class PageController extends ScalatraServlet
       <li><a href="http://localhost:8080/recipes/lunch">recipes/lunch</a></li>
       <li><a href="http://localhost:8080/recipes/dessert">recipes/dessert</a></li>
       <li><a href="http://localhost:8080/recipes/dinner">recipes/dinner</a></li>
-      <li><a href="http://localhost:8080/recipes/mealPlan?calories=1000&diet=Vegetarian">recipes/mealPlan?calories=1000&diet=Vegetarian</a></li>
+      <li><a href='http://localhost:8080/recipes/mealPlan?calories=1000'>recipes/mealPlan?calories=1000</a></li>
       </ul>
     </html>
   }
