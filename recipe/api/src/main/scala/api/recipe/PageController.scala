@@ -25,6 +25,8 @@ class PageController extends ScalatraServlet with FlashMapSupport
       <li><a href='http://localhost:8080/recipes/mealPlan?calories=1000&amp;diet=Vegetarian'>recipes/mealPlan?calories=1000&amp;diet=Vegetarian</a></li>
       <li><a href='http://localhost:8080/recipes/mealPlan?calories=2500&amp;diet=Vegetarian&amp;ingredient=eggs'>recipes/mealPlan?calories=2500&amp;diet=Vegetarian&amp;ingredient=eggs</a></li>
   
+      <li><a href="http://localhost:8080/api-docs/swagger.json">swagger.json</a></li>
+      
       </ul>
     </html>
   }

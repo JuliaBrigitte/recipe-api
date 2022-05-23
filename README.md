@@ -49,6 +49,11 @@ chmod +x ../../sbt/bin/sbt
 You can see the recipe APIs specification at [http://localhost:8080/api-docs/swagger.json](http://localhost:8080/api-docs/swagger.json).
 You can see Swagger-UI at [https://editor.swagger.io/](https://editor.swagger.io/) or [https://swagger.io/swagger-ui/](https://swagger.io/swagger-ui/).
 
+You theoratically can put the link to you swagger output itn the test swagger up, but that does only work
+now with localhost if that runs with https it seems. Mini does not and I managed to show it in the 
+end by signing up to the two week swagger trial by downloading the swagger.json data from this link
+
+http://localhost:8080/api-docs/swagger.json
 
 ## Original Task Description
 
