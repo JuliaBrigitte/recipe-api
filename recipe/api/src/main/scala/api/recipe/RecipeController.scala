@@ -174,31 +174,87 @@ class RecipeController(implicit val swagger: Swagger) extends ScalatraServlet wi
     val calories=params("calories")
 
     val random = new Random
+    var sequenceToCheck:Seq[Recipe]=Seq()
     var result:Seq[Recipe]=Seq()
-    if ("Vegetarian" == params("diet"))
+    var diet=params.getOrElse("diet","none")
+    var ingredient=params.getOrElse("ingredient","")
+    if ("Vegetarian" == diet)
       {
-        var randomRecipe=RecipeData.all.filter(recipe=>recipe.diet == "Vegetarian")(random.nextInt(RecipeData.all.filter(recipe=>recipe.diet == "Vegetarian").length))
-        var randomRecipe2=RecipeData.all.filter(recipe=>recipe.diet == "Vegetarian")(random.nextInt(RecipeData.all.filter(recipe=>recipe.diet == "Vegetarian").length))
-        var randomRecipe3=RecipeData.all.filter(recipe=>recipe.diet == "Vegetarian")(random.nextInt(RecipeData.all.filter(recipe=>recipe.diet == "Vegetarian").length))
-        result=Seq(randomRecipe, randomRecipe2, randomRecipe3)
+        if (ingredient != "")
+        {
+          sequenceToCheck=RecipeData.all.filter(recipe=>((recipe.diet == "Vegetarian")&&(!(recipe.ingredients contains ingredient))))
+        }
+        else
+        {
+          sequenceToCheck=RecipeData.all.filter(recipe=>recipe.diet == "Vegetarian")
+        }
       }
     else
       {
-        var randomRecipe=RecipeData.all(random.nextInt(RecipeData.all.length))
-        var randomRecipe2=RecipeData.all(random.nextInt(RecipeData.all.length))
-        var randomRecipe3=RecipeData.all(random.nextInt(RecipeData.all.length))
-        result=Seq(randomRecipe, randomRecipe2, randomRecipe3)
-      }
+        if (ingredient != "")
+          {
+            sequenceToCheck=RecipeData.all.filter(recipe=>(!(recipe.ingredients contains ingredient)))
 
+          }
+        else
+          {
+            sequenceToCheck=RecipeData.all
+          }
+      }
+  
     var mealPlan="print"
     if (451 > calories.toInt)
+    {
+      mealPlan="fast"
+    }
+    else if (3000 < calories.toInt)
+    {
+      mealPlan="tooMuch"
+    }
+    else
+    {
+      var totalCalories:Int=0
+      if (sequenceToCheck.filter(recipe=>recipe.mealTime == "Breakfast").length > 0)
       {
-        mealPlan="fast"
+        var randomRecipe=sequenceToCheck.filter(recipe=>recipe.mealTime == "Breakfast")(random.nextInt(sequenceToCheck.filter(recipe=>recipe.mealTime == "Breakfast").length))
+        totalCalories=totalCalories+randomRecipe.calories.toInt
+        result=result:+randomRecipe
       }
-    else if (2500 < calories.toInt)
+  
+      if (sequenceToCheck.filter(recipe=>recipe.mealTime == "Lunch").length > 0)
       {
-        mealPlan="tooMuch"
+        var randomRecipe2=sequenceToCheck.filter(recipe=>recipe.mealTime == "Lunch")(random.nextInt(sequenceToCheck.filter(recipe=>recipe.mealTime == "Lunch").length))
+        totalCalories=totalCalories+randomRecipe2.calories.toInt
+        if (totalCalories < calories.toInt)
+        {
+          result=result:+randomRecipe2
+        }
       }
+  
+      if (sequenceToCheck.filter(recipe=>recipe.mealTime == "Dinner").length > 0)
+      {
+        var randomRecipe3=sequenceToCheck.filter(recipe=>recipe.mealTime == "Dinner")(random.nextInt(sequenceToCheck.filter(recipe=>recipe.mealTime == "Dinner").length))
+        totalCalories=totalCalories+randomRecipe3.calories.toInt
+        if (totalCalories < calories.toInt)
+        {
+          result=result:+randomRecipe3
+        }
+      }
+  
+      if (sequenceToCheck.filter(recipe=>recipe.mealTime == "Dessert").length > 0)
+      {
+        var randomRecipe4=sequenceToCheck.filter(recipe=>recipe.mealTime == "Dessert")(random.nextInt(sequenceToCheck.filter(recipe=>recipe.mealTime == "Dessert").length))
+        totalCalories=totalCalories+randomRecipe4.calories.toInt
+        while (totalCalories < calories.toInt)
+        {
+          result=result:+randomRecipe4
+          randomRecipe4=sequenceToCheck.filter(recipe=>recipe.mealTime == "Dessert")(random.nextInt(sequenceToCheck.filter(recipe=>recipe.mealTime == "Dessert").length))
+          totalCalories=totalCalories+randomRecipe4.calories.toInt
+        }
+      }
+    }
+    
+
     (mealPlan ) match
     {
       case "fast" => s"You might as well fast today"
@@ -222,7 +278,7 @@ object RecipeData {
     Recipe("cereal", "Cereal", "Breakfast", 300, "Vegetarian", Array("milk", "nuts")),
     Recipe("eggs-bacon", "Eggs and Bacon", "Breakfast", 450, "Omnivore", Array("eggs", "meat")),
     Recipe("butternut-feta", "Butternut Squash with Feta Cheese", "Lunch", 600, "Vegetarian", Array("cheese")),
-    Recipe("lasagna", "Lasagna", "Lunch", 800, "Omnivore", Array("mild", "meat")),
+    Recipe("lasagna", "Lasagna", "Lunch", 800, "Omnivore", Array("milk", "meat")),
     Recipe("salad", "Salad", "Lunch", 400, "Vegetarian", Array()),
     Recipe("raspberry-ice", "Vanilla ice-cream with hot raspberries", "Dessert", 450, "Vegetarian", Array("milk")),
     Recipe("creme-brulee", "Creme Brulee French desert", "Dessert", 450, "Vegetarian", Array("milk", "eggs")),
